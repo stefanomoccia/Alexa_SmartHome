@@ -1,3 +1,5 @@
+ <script type="text/javascript" src="mqtt_handler.js" />
+
 var http = require('http');
 
 
