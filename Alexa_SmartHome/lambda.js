@@ -1,4 +1,4 @@
- <script type="text/javascript" src="mqtt_handler.js"></script>
+<script type="text/javascript" src="mqtt_handler.js"></script>
 
 var http = require('http');
 
