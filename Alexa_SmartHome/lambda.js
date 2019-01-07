@@ -43,9 +43,9 @@ function onLaunch(launchRequest, session, callback) {
 function getWelcomeResponse(callback) {
     const sessionAttributes = {};
     const cardTitle = 'Welcome';
-    const speechOutput = 'Welcome to the Friday Tech talk demo' ;
+    const speechOutput = 'Welcome to the Smart Home application of Moccias' ;
    
-    const repromptText = 'Hey priyal : which light should I control ?' ;
+    const repromptText = 'Which light should I control ?' ;
     const shouldEndSession = false;
 callback(sessionAttributes,
         buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
@@ -72,7 +72,7 @@ const intent = intentRequest.intent;
 
 function handleSessionEndRequest(callback) {
     const cardTitle = 'Session Ended';
-    const speechOutput = 'Thank you for using Friday Tech talk demo, have a nice week end!';
+    const speechOutput = 'Thank you for using Smart Home application of Moccias, have a nice day!';
     const shouldEndSession = true;
 callback({}, buildSpeechletResponse(cardTitle, speechOutput, null, shouldEndSession));
 }
