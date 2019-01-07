@@ -65,7 +65,7 @@ const intent = intentRequest.intent;
         var color = intent.slots.color.value;
         var lightstatus = intent.slots.lightstatus.value;
         lights(callback,color,lightstatus);
-    } else if (intentName === 'securelight') {
+    } else if (intentName === 'HelloWorldIntent') {
         securelight(callback);
     } 
 }
