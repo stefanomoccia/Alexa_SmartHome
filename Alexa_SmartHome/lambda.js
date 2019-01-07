@@ -5,13 +5,13 @@ var http = require('http');
 /*
 	* MQTT-WebClient example for Web-IO 4.0
 */
-var hostname = "m21.cloudmqtt.com";
-var port = 37719;
+var hostname = "io.adafruit.com";
+var port = 1883;
 var clientId = "webio4mqttexample";
 clientId += new Date().getUTCMilliseconds();;
-var username = "webclient";
-var password = "Super$icher123";
-var subscription = "mywebio/+/status";
+var username = "smoccia";
+var password = "ac7b6bfdab824cfab74b9140e6a85cda";
+var subscription = "smoccia/f/status";
 
 mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
 mqttClient.onMessageArrived = MessageArrived;
