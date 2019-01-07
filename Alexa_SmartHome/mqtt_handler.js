@@ -1,34 +1,65 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+/*
+	* MQTT-WebClient example for Web-IO 4.0
+*/
+var hostname = "m21.cloudmqtt.com";
+var port = 37719;
+var clientId = "webio4mqttexample";
+clientId += new Date().getUTCMilliseconds();;
+var username = "webclient";
+var password = "Super$icher123";
+var subscription = "mywebio/+/status";
 
-// Create a client instance
-client = new Paho.MQTT.Client(location.hostname, Number(location.port), "clientId");
+mqttClient = new Paho.MQTT.Client(hostname, port, clientId);
+mqttClient.onMessageArrived = MessageArrived;
+mqttClient.onConnectionLost = ConnectionLost;
+Connect();
 
-// set callback handlers
-client.onConnectionLost = onConnectionLost;
-client.onMessageArrived = onMessageArrived;
-
-// connect the client
-client.connect({onSuccess:onConnect});
-
-
-// called when the client connects
-function onConnect() {
-  // Once a connection has been made, make a subscription and send a message.
-  console.log("onConnect");
-  client.subscribe("World");
-  message = new Paho.MQTT.Message("Hello");
-  message.destinationName = "World";
-  client.send(message);
+/*Initiates a connection to the MQTT broker*/
+function Connect(){
+	mqttClient.connect({
+	onSuccess: Connected,
+	onFailure: ConnectionFailed,
+	keepAliveInterval: 10,
+	userName: username,
+	useSSL: true,
+	password: password});
 }
 
-// called when the client loses its connection
-function onConnectionLost(responseObject) {
-  if (responseObject.errorCode !== 0) {
-    console.log("onConnectionLost:"+responseObject.errorMessage);
-  }
+/*Callback for successful MQTT connection */
+function Connected() {
+	console.log("Connected");
+	mqttClient.subscribe(subscription);
 }
 
-// called when a message arrives
-function onMessageArrived(message) {
-  console.log("onMessageArrived:"+message.payloadString);
+/*Callback for failed connection*/
+function ConnectionFailed(res) {
+	console.log("Connect failed:" + res.errorMessage);
+}
+
+/*Callback for lost connection*/
+function ConnectionLost(res) {
+	if (res.errorCode !== 0) {
+		console.log("Connection lost:" + res.errorMessage);
+		Connect();
+	}
+}
+
+/*Callback for incoming message processing */
+function MessageArrived(message) {
+	console.log(message.destinationName +" : " + message.payloadString);
+	switch(message.payloadString){
+		case "ON":
+			displayClass = "on";
+			break;
+		case "OFF":
+			displayClass = "off";
+			break;
+		default:
+			displayClass = "unknown";
+	}
+	var topic = message.destinationName.split("/");
+	if (topic.length == 3){
+		var ioname = topic[1];
+		UpdateElement(ioname, displayClass);
+	}
 }
